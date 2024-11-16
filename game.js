@@ -1,7 +1,5 @@
 let tracksPos = { x: 0, y: 0 };
-let hobo = { x: 300, y: 100 };
-let train = { x: 300, y: 300 };
-let main = { x: 300, y: 500 };
+
 let state = "game";
 
 function setup() {
@@ -166,19 +164,19 @@ function trainTracks() {
   }
 }
 
-function hoboCharacter() {
+function hoboCharacter(x, y) {
   fill(0, 255, 0);
-  ellipse(hobo.x + 0, hobo.y + 0, 200, 200);
+  ellipse(x + 0, y + 0, 100, 100);
 }
 
-function trainCharacter() {
+function trainCharacter(x, y) {
   fill(0, 0, 255);
-  ellipse(train.x + 0, train.y + 0, 200, 200);
+  ellipse(x + 0, y + 0, 100, 100);
 }
 
-function mainCharacter() {
+function mainCharacter(x, y) {
   fill(255, 0, 0);
-  ellipse(main.x + 0, main.y + 0, 200, 200);
+  ellipse(x + 0, y + 0, 100, 100);
 }
 
 function callingStatesWithSpace() {
@@ -201,9 +199,9 @@ function draw() {
     startScreen();
   } else if (state === "game") {
     gameScreen();
-    mainCharacter();
-    hoboCharacter();
-    trainCharacter();
+    mainCharacter(400, 300);
+    hoboCharacter(200, 200);
+    trainCharacter(200, 300);
   } else if (state === "win") {
     gameScreen();
     winScreen();
