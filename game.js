@@ -1,5 +1,8 @@
 let tracksPos = { x: 0, y: 0 };
-let state = "start";
+let hobo = { x: 300, y: 100 };
+let train = { x: 300, y: 300 };
+let main = { x: 300, y: 500 };
+let state = "game";
 
 function setup() {
   createCanvas(600, 1030);
@@ -163,6 +166,21 @@ function trainTracks() {
   }
 }
 
+function hoboCharacter() {
+  fill(0, 255, 0);
+  ellipse(hobo.x + 0, hobo.y + 0, 200, 200);
+}
+
+function trainCharacter() {
+  fill(0, 0, 255);
+  ellipse(train.x + 0, train.y + 0, 200, 200);
+}
+
+function mainCharacter() {
+  fill(255, 0, 0);
+  ellipse(main.x + 0, main.y + 0, 200, 200);
+}
+
 function callingStatesWithSpace() {
   //Using the spacebar lets you navigate game menus
   if (keyIsDown(32) && state === "start") {
@@ -183,6 +201,9 @@ function draw() {
     startScreen();
   } else if (state === "game") {
     gameScreen();
+    mainCharacter();
+    hoboCharacter();
+    trainCharacter();
   } else if (state === "win") {
     gameScreen();
     winScreen();
