@@ -28,9 +28,25 @@ function gameScreen() {
   trainStation();
 }
 
-function winScreen() {}
+function winScreen() {
+  textSize(70);
+  textAlign(CENTER);
+  strokeWeight(0);
+  fill(255);
+  text("You won!", 300, 530);
+  textSize(22);
+  text("Press space to try again", 300, 590);
+}
 
-function lossScreen() {}
+function lossScreen() {
+  textSize(70);
+  textAlign(CENTER);
+  strokeWeight(0);
+  fill(255);
+  text("You lost!", 300, 530);
+  textSize(22);
+  text("Press space to try again", 300, 590);
+}
 
 function scoresAndLives() {
   strokeWeight(0);
@@ -151,6 +167,6 @@ function draw() {
   scoresAndLives();
   //startScreen();
   gameScreen();
-  winScreen();
-  lossScreen();
+  //winScreen();
+  //lossScreen();
 }
