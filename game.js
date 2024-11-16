@@ -1,4 +1,5 @@
 let tracksPos = { x: 0, y: 0 };
+let state = "start";
 
 function setup() {
   createCanvas(600, 1030);
@@ -8,15 +9,14 @@ function startScreen() {
   fill(255);
   textAlign(CENTER);
   textSize(55);
-
   text("Survive Nässjö Station", 300, 300);
-
   textSize(27);
   text("Objective: Get home to your tent safely", 300, 350);
-
   textSize(15);
   text("Use your arrows to play", 300, 390);
+  text("Press space to start", 300, 420);
 
+  //Adds Station entrance to startScreen
   push();
   translate(-600, -2060);
   scale(3);
@@ -26,6 +26,7 @@ function startScreen() {
 
 function gameScreen() {
   trainStation();
+  scoresAndLives();
 }
 
 function winScreen() {
@@ -54,12 +55,12 @@ function scoresAndLives() {
   fill(0);
   rect(0, 0, 600, 40);
   fill(256, 12, 12);
-  ellipse(120, 20, 20, 20);
-  ellipse(150, 20, 20, 20);
-  ellipse(180, 20, 20, 20);
+  ellipse(100, 20, 20, 20);
+  ellipse(130, 20, 20, 20);
+  ellipse(160, 20, 20, 20);
   fill(255);
   textSize(10);
-  text("LIVES LEFT:", 20, 25);
+  text("LIVES LEFT:", 22, 24);
   text("SCORE:", 470, 25);
 }
 
@@ -162,11 +163,31 @@ function trainTracks() {
   }
 }
 
+function callingStatesWithSpace() {
+  //Using the spacebar lets you navigate game menus
+  if (keyIsDown(32) && state === "start") {
+    state = "game";
+  } else if (keyIsDown(32) && state === "win") {
+    state = "game";
+  } else if (keyIsDown(32) && state === "loss") {
+    state = "game";
+  }
+}
+
 function draw() {
   background(30);
-  scoresAndLives();
-  //startScreen();
-  gameScreen();
-  //winScreen();
-  //lossScreen();
+  callingStatesWithSpace();
+
+  //What state = to what screens
+  if (state === "start") {
+    startScreen();
+  } else if (state === "game") {
+    gameScreen();
+  } else if (state === "win") {
+    gameScreen();
+    winScreen();
+  } else if (state === "loss") {
+    gameScreen();
+    lossScreen();
+  }
 }
