@@ -165,8 +165,8 @@ function trainTracks() {
 }
 
 function hoboCharacter(x, y) {
-  fill(0, 255, 0);
-  ellipse(x + 0, y + 0, 100, 100);
+  fill(40, 188, 132);
+  ellipse(x + 0, y + 0, 60, 20);
 }
 
 function trainCharacter(x, y) {
@@ -175,8 +175,24 @@ function trainCharacter(x, y) {
 }
 
 function mainCharacter(x, y) {
-  fill(255, 0, 0);
-  ellipse(x + 0, y + 0, 100, 100);
+  fill(52, 56, 48);
+  ellipse(x - 15, y - 20, 10, 10); // shoe front
+  rect(x + 10, y + 20, 10, 5); // shoe back
+  fill(4, 148, 172);
+  quad(x - 20, y - 20, x - 10, y - 20, x + 0, y + 0, x - 20, y + 0); // leg front
+  quad(x + 20, y + 20, x + 10, y + 20, x + 0, y + 0, x + 20, y + 0); // leg back
+  fill(40, 188, 132);
+  ellipse(x + 0, y + 0, 60, 20); // body
+  ellipse(x + 27, y - 7, 10, 20); // front arm
+  ellipse(x - 27, y + 7, 10, 20); // back arm
+  fill(244, 196, 172);
+  ellipse(x - 27, y + 15, 8, 5); // back hand
+  ellipse(x + 27, y - 15, 8, 5); // front hand
+  fill(244, 196, 172);
+  ellipse(x - 12, y + 0, 5, 5); // left ear
+  ellipse(x + 12, y + 0, 5, 5); // right ear
+  fill(48, 44, 52);
+  ellipse(x + 0, y + 0, 25, 25); // head
 }
 
 function callingStatesWithSpace() {
