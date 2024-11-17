@@ -1,5 +1,5 @@
 let tracksPos = { x: 0, y: 0 };
-
+let x = -400;
 let state = "game";
 
 function setup() {
@@ -31,6 +31,15 @@ function gameScreen() {
 }
 
 function winScreen() {
+  trainTracks((tracksPos.x = 0), (tracksPos.y = 160));
+  trainTracks((tracksPos.x = 0), (tracksPos.y = 290));
+  trainTracks((tracksPos.x = 0), (tracksPos.y = 460));
+  trainTracks((tracksPos.x = 0), (tracksPos.y = 620));
+  trainTracks((tracksPos.x = 0), (tracksPos.y = 700));
+  trainTracks((tracksPos.x = 0), (tracksPos.y = 860));
+  gameScreen();
+  entrance();
+
   textSize(70);
   textAlign(CENTER);
   strokeWeight(0);
@@ -41,6 +50,15 @@ function winScreen() {
 }
 
 function lossScreen() {
+  trainTracks((tracksPos.x = 0), (tracksPos.y = 160));
+  trainTracks((tracksPos.x = 0), (tracksPos.y = 290));
+  trainTracks((tracksPos.x = 0), (tracksPos.y = 460));
+  trainTracks((tracksPos.x = 0), (tracksPos.y = 620));
+  trainTracks((tracksPos.x = 0), (tracksPos.y = 700));
+  trainTracks((tracksPos.x = 0), (tracksPos.y = 860));
+  gameScreen();
+  entrance();
+
   textSize(70);
   textAlign(CENTER);
   strokeWeight(0);
@@ -132,14 +150,6 @@ function trainStation() {
   line(290, 35, 340, 80);
   line(310, 35, 260, 80);
   pop();
-
-  trainTracks((tracksPos.x = 0), (tracksPos.y = 160));
-  trainTracks((tracksPos.x = 0), (tracksPos.y = 290));
-  trainTracks((tracksPos.x = 0), (tracksPos.y = 460));
-  trainTracks((tracksPos.x = 0), (tracksPos.y = 620));
-  trainTracks((tracksPos.x = 0), (tracksPos.y = 700));
-  trainTracks((tracksPos.x = 0), (tracksPos.y = 860));
-  entrance();
 }
 
 function trainTracks() {
@@ -197,7 +207,8 @@ function hoboCharacter(x, y) {
   pop();
 }
 
-function trainCharacter(x, y) {
+function trainCharacterLong(x, y) {
+  strokeWeight(0);
   fill(50);
   rect(x - 120, y - 4, 300, 8); //Thing connecting the train
   fill(228, 204, 91);
@@ -215,6 +226,30 @@ function trainCharacter(x, y) {
   ellipse(x + 210, y + 0, 65, 40); // Glass
   rect(x + 12, y - 25, 100, 50, 5); // electric connection middle car back
   rect(x - 127, y - 25, 100, 50, 5); // electric connection back car front
+
+  fill(64, 108, 52);
+  rect(x + 140, y - 30, 70, 60, 5); // Train back body
+  rect(x + 185, y - 22, 40, 44); // Glass cover
+}
+
+function trainCharacterShort(x, y) {
+  fill(50);
+  rect(x + 120, y - 4, 30, 8); //Thing connecting the train
+  fill(228, 204, 91);
+  ellipse(x + 250, y + 12, 10, 10);
+  ellipse(x + 250, y - 12, 10, 10);
+  fill(228, 204, 91, 127);
+  quad(x + 250, y - 15, x + 370, y - 20, x + 370, y + 20, x + 250, y + 15);
+
+  fill(64, 108, 52);
+  rect(x + 0, y - 30, 125, 60, 5); // middle train car
+  //rect(x - 140, y - 30, 125, 60, 5); // Back train car
+  ellipse(x + 210, y + 0, 95, 60); // Train front body
+
+  fill(20);
+  ellipse(x + 210, y + 0, 65, 40); // Glass
+  rect(x + 12, y - 25, 100, 50, 5); // inside of car
+  //rect(x - 127, y - 25, 100, 50, 5); // inside of car
 
   fill(64, 108, 52);
   rect(x + 140, y - 30, 70, 60, 5); // Train back body
@@ -260,15 +295,30 @@ function draw() {
   if (state === "start") {
     startScreen();
   } else if (state === "game") {
+    trainTracks((tracksPos.x = 0), (tracksPos.y = 160));
+    trainTracks((tracksPos.x = 0), (tracksPos.y = 290));
+    trainTracks((tracksPos.x = 0), (tracksPos.y = 460));
+    trainTracks((tracksPos.x = 0), (tracksPos.y = 620));
+    trainTracks((tracksPos.x = 0), (tracksPos.y = 700));
+    trainTracks((tracksPos.x = 0), (tracksPos.y = 860));
+    trainCharacterLong(x, 210);
+    trainCharacterLong(x, 510);
+    trainCharacterLong(x, 670);
+    trainCharacterLong(x, 910);
+    trainCharacterShort(x, 340);
+    trainCharacterShort(x, 750);
     gameScreen();
-    hoboCharacter(430, -200);
-    trainCharacter(200, 210);
     mainCharacter(300, 820);
+    hoboCharacter(430, -200);
+    entrance();
+
+    x = x + 8;
+    if (x >= 800) {
+      x = -400;
+    }
   } else if (state === "win") {
-    gameScreen();
     winScreen();
   } else if (state === "loss") {
-    gameScreen();
     lossScreen();
   }
 }
