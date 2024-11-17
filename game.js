@@ -110,8 +110,8 @@ function entrance() {
 function trainStation() {
   //Railway platforms
   strokeWeight(10);
-  stroke(200);
-  fill(104, 86, 78);
+  stroke(255, 255, 255);
+  fill(170);
   rect(-10, 560, 620, 60);
   rect(-10, 800, 620, 60);
   rect(-10, 100, 620, 60);
@@ -144,44 +144,81 @@ function trainStation() {
 
 function trainTracks() {
   strokeWeight(7);
-  stroke(70);
+  stroke(122, 95, 78);
   strokeCap(PROJECT);
-  for (let i = 0; i < 15; i++) {
+  for (let i = 0; i < 21; i++) {
     line(
-      tracksPos.x + 25 + i * 50,
-      tracksPos.y + 20,
-      tracksPos.x + 25 + i * 50,
-      tracksPos.y + 80
+      tracksPos.x + 0 + i * 30,
+      tracksPos.y + 30,
+      tracksPos.x + 0 + i * 30,
+      tracksPos.y + 70
     );
   }
   for (let i = 0; i < 2; i++) {
+    stroke(200);
     line(
       tracksPos.x + 0,
-      tracksPos.y + 35 + i * 30,
+      tracksPos.y + 40 + i * 20,
       tracksPos.x + 1000,
-      tracksPos.y + 35 + i * 30
+      tracksPos.y + 40 + i * 20
     );
   }
 }
 
 function hoboCharacter(x, y) {
-  fill(40, 188, 132);
-  ellipse(x + 0, y + 0, 60, 20);
+  push();
+  rotate(HALF_PI);
+  fill(52, 56, 48);
+  ellipse(x - 15, y - 20, 10, 10); // shoe front
+  rect(x + 10, y + 20, 10, 5); // shoe back
+  fill(66, 40, 27);
+  quad(x - 20, y - 20, x - 10, y - 20, x + 0, y + 0, x - 20, y + 0); // leg front
+  quad(x + 20, y + 20, x + 10, y + 20, x + 0, y + 0, x + 20, y + 0); // leg back
+  fill(120, 36, 36);
+  ellipse(x + 0, y + 0, 60, 20); // body
+  ellipse(x + 27, y - 7, 10, 20); // front arm
+  ellipse(x - 27, y + 7, 10, 20); // back arm
+  fill(140, 112, 98);
+  ellipse(x - 27, y + 15, 8, 5); // back hand
+  ellipse(x + 27, y - 15, 8, 5); // front hand
+  ellipse(x - 12, y + 0, 5, 5); // left ear
+  ellipse(x + 12, y + 0, 5, 5); // right ear
+  fill(48, 44, 52);
+  ellipse(x + 0, y + 0, 25, 25); // head
+  fill(64, 156, 52);
+  rect(x + 20, y - 20, 10, 6);
+  rect(x + 26, y - 19, 10, 3);
+  fill(9, 88, 36);
+  rect(x + 22, y - 19, 6, 4);
+  rect(x + 35, y - 20, 2, 5);
+  fill(212, 18, 23);
+  ellipse(x + 26, y - 17, 2, 2);
+
+  pop();
 }
 
 function trainCharacter(x, y) {
-  fill(0, 0, 255);
-  rect (x - 55, y -10, 125, 75);
-  rect (x - 190, y -10, 125, 75);
-ellipse (x + 130, y +28, 95, 80);
-fill(0,0,0);
-ellipse (x + 126, y +28, 95, 70);
-fill(0, 0, 255);
-rect (x + 80, y -10, 50, 75);
-fill(0,0,0);
-rect (x+70,y+20, 10, 20);
-rect (x-65,y+20, 10, 20);
+  fill(50);
+  rect(x - 120, y - 4, 300, 8); //Thing connecting the train
+  fill(228, 204, 91);
+  ellipse(x + 250, y + 12, 10, 10);
+  ellipse(x + 250, y - 12, 10, 10);
+  fill(228, 204, 91, 127);
+  quad(x + 250, y - 15, x + 370, y - 20, x + 370, y + 20, x + 250, y + 15);
 
+  fill(64, 108, 52);
+  rect(x + 0, y - 30, 125, 60, 5); // middle train car
+  rect(x - 140, y - 30, 125, 60, 5); // Back train car
+  ellipse(x + 210, y + 0, 95, 60); // Train front body
+  fill(20);
+
+  ellipse(x + 210, y + 0, 65, 40); // Glass
+  rect(x + 12, y - 25, 100, 50, 5); // electric connection middle car back
+  rect(x - 127, y - 25, 100, 50, 5); // electric connection back car front
+
+  fill(64, 108, 52);
+  rect(x + 140, y - 30, 70, 60, 5); // Train back body
+  rect(x + 185, y - 22, 40, 44); // Glass cover
 }
 
 function mainCharacter(x, y) {
@@ -198,7 +235,6 @@ function mainCharacter(x, y) {
   fill(244, 196, 172);
   ellipse(x - 27, y + 15, 8, 5); // back hand
   ellipse(x + 27, y - 15, 8, 5); // front hand
-  fill(244, 196, 172);
   ellipse(x - 12, y + 0, 5, 5); // left ear
   ellipse(x + 12, y + 0, 5, 5); // right ear
   fill(48, 44, 52);
@@ -225,9 +261,9 @@ function draw() {
     startScreen();
   } else if (state === "game") {
     gameScreen();
-    mainCharacter(400, 300);
-    hoboCharacter(200, 200);
-    trainCharacter(200, 300);
+    hoboCharacter(430, -200);
+    trainCharacter(200, 210);
+    mainCharacter(300, 820);
   } else if (state === "win") {
     gameScreen();
     winScreen();
