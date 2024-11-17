@@ -171,7 +171,17 @@ function hoboCharacter(x, y) {
 
 function trainCharacter(x, y) {
   fill(0, 0, 255);
-  ellipse(x + 0, y + 0, 100, 100);
+  rect (x - 55, y -10, 125, 75);
+  rect (x - 190, y -10, 125, 75);
+ellipse (x + 130, y +28, 95, 80);
+fill(0,0,0);
+ellipse (x + 126, y +28, 95, 70);
+fill(0, 0, 255);
+rect (x + 80, y -10, 50, 75);
+fill(0,0,0);
+rect (x+70,y+20, 10, 20);
+rect (x-65,y+20, 10, 20);
+
 }
 
 function mainCharacter(x, y) {
