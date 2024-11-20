@@ -31,12 +31,7 @@ function gameScreen() {
 }
 
 function winScreen() {
-  trainTracks((tracksPos.x = 0), (tracksPos.y = 160));
-  trainTracks((tracksPos.x = 0), (tracksPos.y = 290));
-  trainTracks((tracksPos.x = 0), (tracksPos.y = 460));
-  trainTracks((tracksPos.x = 0), (tracksPos.y = 620));
-  trainTracks((tracksPos.x = 0), (tracksPos.y = 700));
-  trainTracks((tracksPos.x = 0), (tracksPos.y = 860));
+  trainTracksCall();
   gameScreen();
   entrance();
 
@@ -50,12 +45,7 @@ function winScreen() {
 }
 
 function lossScreen() {
-  trainTracks((tracksPos.x = 0), (tracksPos.y = 160));
-  trainTracks((tracksPos.x = 0), (tracksPos.y = 290));
-  trainTracks((tracksPos.x = 0), (tracksPos.y = 460));
-  trainTracks((tracksPos.x = 0), (tracksPos.y = 620));
-  trainTracks((tracksPos.x = 0), (tracksPos.y = 700));
-  trainTracks((tracksPos.x = 0), (tracksPos.y = 860));
+  trainTracksCall();
   gameScreen();
   entrance();
 
@@ -175,6 +165,15 @@ function trainTracks() {
   }
 }
 
+function trainTracksCall() {
+  trainTracks((tracksPos.x = 0), (tracksPos.y = 160));
+  trainTracks((tracksPos.x = 0), (tracksPos.y = 290));
+  trainTracks((tracksPos.x = 0), (tracksPos.y = 460));
+  trainTracks((tracksPos.x = 0), (tracksPos.y = 620));
+  trainTracks((tracksPos.x = 0), (tracksPos.y = 700));
+  trainTracks((tracksPos.x = 0), (tracksPos.y = 860));
+}
+
 function hoboCharacter(x, y) {
   push();
   rotate(HALF_PI);
@@ -256,6 +255,15 @@ function trainCharacterShort(x, y) {
   rect(x + 185, y - 22, 40, 44); // Glass cover
 }
 
+function trainCall() {
+  trainCharacterLong(x, 210);
+  trainCharacterLong(x, 510);
+  trainCharacterLong(x, 670);
+  trainCharacterLong(x, 910);
+  trainCharacterShort(x, 340);
+  trainCharacterShort(x, 750);
+}
+
 function mainCharacter(x, y) {
   fill(52, 56, 48);
   ellipse(x - 15, y - 20, 10, 10); // shoe front
@@ -295,18 +303,8 @@ function draw() {
   if (state === "start") {
     startScreen();
   } else if (state === "game") {
-    trainTracks((tracksPos.x = 0), (tracksPos.y = 160));
-    trainTracks((tracksPos.x = 0), (tracksPos.y = 290));
-    trainTracks((tracksPos.x = 0), (tracksPos.y = 460));
-    trainTracks((tracksPos.x = 0), (tracksPos.y = 620));
-    trainTracks((tracksPos.x = 0), (tracksPos.y = 700));
-    trainTracks((tracksPos.x = 0), (tracksPos.y = 860));
-    trainCharacterLong(x, 210);
-    trainCharacterLong(x, 510);
-    trainCharacterLong(x, 670);
-    trainCharacterLong(x, 910);
-    trainCharacterShort(x, 340);
-    trainCharacterShort(x, 750);
+    trainTracksCall();
+    trainCall();
     gameScreen();
     mainCharacter(300, 820);
     hoboCharacter(430, -200);
