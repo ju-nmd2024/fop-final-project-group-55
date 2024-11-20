@@ -38,14 +38,18 @@ function gameScreen() {
   trainTracks((tracksPos.x = 0), (tracksPos.y = 860));
 
   player.character();
-  hobo.character();
+  hobo1.character();
+  hobo2.character();
+  hobo3.character();
+  hobo4.character();
+  hobo5.character();
 
-  trainOne.train();
-  trainTwo.train();
-  trainThree.train();
-  trainFour.train();
-  trainFive.train();
-  trainSix.train();
+  train1.train();
+  train2.train();
+  train3.train();
+  train4.train();
+  train5.train();
+  train6.train();
 
   stationEntrance();
 }
@@ -86,6 +90,14 @@ class ScreenText {
     textSize(70);
     textAlign(CENTER);
     strokeWeight(0);
+    stroke(0);
+    //text shadow
+    fill(40);
+    text(this.topText, 301, 531);
+    textSize(22);
+    text(this.bottomText, 301, 591);
+    //regular text
+    textSize(70);
     fill(255);
     text(this.topText, 300, 530);
     textSize(22);
@@ -277,33 +289,6 @@ function trainTracks() {
   }
 }
 
-let win = new ScreenText("You won!", "Press space to try again");
-let loss = new ScreenText("You lost!", "Press space to try again");
-
-let trainOne = new Train(100, 210, "rgb(40, 188, 132)", 0);
-let trainTwo = new Train(100, 340, "rgb(120, 36, 36)", 1);
-let trainThree = new Train(100, 510, "rgb(120, 136, 0)", 2);
-let trainFour = new Train(100, 670, "rgb(40, 188, 132)", 0);
-let trainFive = new Train(100, 750, "rgb(120, 36, 36)", 1);
-let trainSix = new Train(100, 910, "rgb(120, 136, 0)", 2);
-
-let player = new Character(
-  50,
-  830,
-  "rgb(40, 188, 132)",
-  "rgb(244, 196, 172)",
-  "rgb(4, 148, 172)",
-  false
-);
-let hobo = new Character(
-  100,
-  300,
-  "rgb(120, 36, 36)",
-  "rgb(140, 112, 98)",
-  "rgb(66, 40, 27)",
-  true
-);
-
 function draw() {
   background(30);
   callingStatesWithSpaceBar();
@@ -321,3 +306,63 @@ function draw() {
     loss.screenText();
   }
 }
+
+let win = new ScreenText("You won!", "Press space to try again");
+let loss = new ScreenText("You lost!", "Press space to try again");
+
+let train1 = new Train(100, 210, "rgb(40, 188, 132)", 1);
+let train2 = new Train(100, 340, "rgb(120, 36, 36)", 2);
+let train3 = new Train(100, 510, "rgb(120, 136, 0)", 2);
+let train4 = new Train(100, 670, "rgb(40, 188, 132)", 0);
+let train5 = new Train(100, 750, "rgb(120, 36, 36)", 1);
+let train6 = new Train(100, 910, "rgb(120, 136, 0)", 2);
+
+let player = new Character(
+  50,
+  780,
+  "rgb(40, 188, 132)",
+  "rgb(244, 196, 172)",
+  "rgb(4, 148, 172)",
+  false
+);
+let hobo1 = new Character(
+  100,
+  130,
+  "rgb(120, 36, 36)",
+  "rgb(140, 112, 98)",
+  "rgb(66, 40, 27)",
+  true
+);
+let hobo2 = new Character(
+  100,
+  270,
+  "rgb(120, 36, 36)",
+  "rgb(140, 112, 98)",
+  "rgb(66, 40, 27)",
+  true
+);
+let hobo3 = new Character(
+  100,
+  430,
+  "rgb(120, 36, 36)",
+  "rgb(140, 112, 98)",
+  "rgb(66, 40, 27)",
+  true
+);
+
+let hobo4 = new Character(
+  100,
+  590,
+  "rgb(120, 36, 36)",
+  "rgb(140, 112, 98)",
+  "rgb(66, 40, 27)",
+  true
+);
+let hobo5 = new Character(
+  100,
+  830,
+  "rgb(120, 36, 36)",
+  "rgb(140, 112, 98)",
+  "rgb(66, 40, 27)",
+  true
+);
