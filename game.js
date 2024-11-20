@@ -1,5 +1,3 @@
-let tracksPos = { x: 0, y: 0 };
-let x = 0;
 let state = "game";
 
 function setup() {
@@ -30,14 +28,15 @@ function gameScreen() {
 
   trainStation();
 
-  trainTracks((tracksPos.x = 0), (tracksPos.y = 160));
-  trainTracks((tracksPos.x = 0), (tracksPos.y = 290));
-  trainTracks((tracksPos.x = 0), (tracksPos.y = 460));
-  trainTracks((tracksPos.x = 0), (tracksPos.y = 620));
-  trainTracks((tracksPos.x = 0), (tracksPos.y = 700));
-  trainTracks((tracksPos.x = 0), (tracksPos.y = 860));
+  track1.trainTracks();
+  track2.trainTracks();
+  track3.trainTracks();
+  track4.trainTracks();
+  track5.trainTracks();
+  track6.trainTracks();
 
   player.character();
+
   hobo1.character();
   hobo2.character();
   hobo3.character();
@@ -102,6 +101,28 @@ class ScreenText {
     text(this.topText, 300, 530);
     textSize(22);
     text(this.bottomText, 300, 590);
+  }
+}
+
+class Traintracks {
+  constructor(x, y) {
+    this.x = x;
+    this.y = y;
+  }
+
+  trainTracks() {
+    let x = this.x;
+    let y = this.y;
+    strokeWeight(7);
+    stroke(122, 95, 78);
+    strokeCap(PROJECT);
+    for (let i = 0; i < 21; i++) {
+      line(x + 0 + i * 30, y + 30, x + 0 + i * 30, y + 70);
+    }
+    for (let i = 0; i < 2; i++) {
+      stroke(200);
+      line(x + 0, y + 40 + i * 20, x + 1000, y + 40 + i * 20);
+    }
   }
 }
 
@@ -266,29 +287,6 @@ function trainStation() {
   pop();
 }
 
-function trainTracks() {
-  strokeWeight(7);
-  stroke(122, 95, 78);
-  strokeCap(PROJECT);
-  for (let i = 0; i < 21; i++) {
-    line(
-      tracksPos.x + 0 + i * 30,
-      tracksPos.y + 30,
-      tracksPos.x + 0 + i * 30,
-      tracksPos.y + 70
-    );
-  }
-  for (let i = 0; i < 2; i++) {
-    stroke(200);
-    line(
-      tracksPos.x + 0,
-      tracksPos.y + 40 + i * 20,
-      tracksPos.x + 1000,
-      tracksPos.y + 40 + i * 20
-    );
-  }
-}
-
 function draw() {
   background(30);
   callingStatesWithSpaceBar();
@@ -309,6 +307,13 @@ function draw() {
 
 let win = new ScreenText("You won!", "Press space to try again");
 let loss = new ScreenText("You lost!", "Press space to try again");
+
+let track1 = new Traintracks(0, 160);
+let track2 = new Traintracks(0, 290);
+let track3 = new Traintracks(0, 460);
+let track4 = new Traintracks(0, 620);
+let track5 = new Traintracks(0, 700);
+let track6 = new Traintracks(0, 860);
 
 let train1 = new Train(100, 210, "rgb(40, 188, 132)", 1);
 let train2 = new Train(100, 340, "rgb(120, 36, 36)", 2);
