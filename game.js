@@ -33,8 +33,17 @@ function gameScreen() {
   for (let trainObject of train) {
     trainObject.train();
   }
+  // written with help from chatGPT (https://chatgpt.com/share/673e82da-4f54-8000-b19f-0b1f423cbfbe)
+  if (frameCount % 6 === 0) {
+    for (let hoboObject of hobo) {
+      hoboObject.flipped = !hoboObject.flipped;
+    }
+  }
+
   for (let hoboObject of hobo) {
+    hoboObject.movement.update(hoboObject);
     hoboObject.character();
+    // end of help from chatGPT (https://chatgpt.com/share/673e82da-4f54-8000-b19f-0b1f423cbfbe)
   }
   stationEntrance();
 }
@@ -160,46 +169,124 @@ class Train {
 }
 
 class Character {
-  constructor(x, y, shirtColor, skinColor, pantsColor, beerCan) {
+  constructor(
+    x,
+    y,
+    shirtColor,
+    skinColor,
+    pantsColor,
+    beerCan,
+    direction,
+    flipped
+  ) {
     this.x = x;
     this.y = y;
     this.shirtColor = shirtColor;
     this.skinColor = skinColor;
     this.pantsColor = pantsColor;
     this.beerCan = beerCan;
+    this.direction = direction;
+    this.flipped = flipped;
+    this.movement = new NpcMovement(7, this.direction);
   }
 
   character() {
     let x = this.x;
     let y = this.y;
-    strokeWeight(0);
-    fill(52, 56, 48);
-    ellipse(x - 15, y - 20, 10, 10); // shoe front
-    rect(x + 10, y + 20, 10, 5); // shoe back
-    fill(this.pantsColor);
-    quad(x - 20, y - 20, x - 10, y - 20, x + 0, y + 0, x - 20, y + 0); // leg front
-    quad(x + 20, y + 20, x + 10, y + 20, x + 0, y + 0, x + 20, y + 0); // leg back
-    fill(this.shirtColor);
-    ellipse(x + 0, y + 0, 60, 20); // body
-    ellipse(x + 27, y - 7, 10, 20); // front arm
-    ellipse(x - 27, y + 7, 10, 20); // back arm
-    fill(this.skinColor);
-    ellipse(x - 27, y + 15, 8, 5); // back hand
-    ellipse(x + 27, y - 15, 8, 5); // front hand
-    ellipse(x - 12, y + 0, 5, 5); // left ear
-    ellipse(x + 12, y + 0, 5, 5); // right ear
-    fill(48, 44, 52);
-    ellipse(x + 0, y + 0, 25, 25); // head
 
-    if (this.beerCan) {
-      fill(64, 156, 52);
-      rect(x + 20, y - 20, 10, 6);
-      rect(x + 26, y - 19, 10, 3);
-      fill(9, 88, 36);
-      rect(x + 22, y - 19, 6, 4);
-      rect(x + 35, y - 20, 2, 5);
-      fill(212, 18, 23);
-      ellipse(x + 26, y - 17, 2, 2);
+    if (this.flipped) {
+      push();
+      translate(x, y);
+      rotate(HALF_PI * this.direction);
+
+      strokeWeight(0);
+      fill(52, 56, 48);
+      ellipse(-15, -20, 10, 10); // shoe front
+      rect(10, 20, 10, 5); // shoe back
+      fill(this.pantsColor);
+      quad(-20, -20, -10, -20, 0, 0, -20, 0); // leg front
+      quad(20, 20, 10, 20, 0, 0, 20, 0); // leg back
+      fill(this.shirtColor);
+      ellipse(0, 0, 60, 20); // body
+      ellipse(27, -7, 10, 20); // front arm
+      ellipse(-27, 7, 10, 20); // back arm
+      fill(this.skinColor);
+      ellipse(-27, 15, 8, 5); // back hand
+      ellipse(27, -15, 8, 5); // front hand
+      ellipse(-12, 0, 5, 5); // left ear
+      ellipse(12, 0, 5, 5); // right ear
+      fill(48, 44, 52);
+      ellipse(0, 0, 25, 25); // head
+
+      if (this.beerCan) {
+        fill(64, 156, 52);
+        rect(20, -20, 10, 6);
+        rect(26, -19, 10, 3);
+        fill(9, 88, 36);
+        rect(22, -19, 6, 4);
+        rect(35, -20, 2, 5);
+        fill(212, 18, 23);
+        ellipse(26, -17, 2, 2);
+      }
+
+      pop();
+    } else {
+      push();
+      translate(x, y);
+      rotate(HALF_PI * this.direction);
+
+      strokeWeight(0);
+      fill(52, 56, 48);
+      ellipse(15, -20, 10, 10); // shoe front
+      rect(-20, 20, 10, 5); // shoe back
+      fill(this.pantsColor);
+      quad(20, -20, 10, -20, 0, 0, 20, 0); // leg front
+      quad(-20, 20, -10, 20, 0, 0, -20, 0); // leg back
+      fill(this.shirtColor);
+      ellipse(0, 0, 60, 20); // body
+      ellipse(-27, -7, 10, 20); // front arm
+      ellipse(27, 7, 10, 20); // back arm
+      fill(this.skinColor);
+      ellipse(27, 15, 8, 5); // back hand
+      ellipse(-27, -15, 8, 5); // front hand
+      ellipse(12, 0, 5, 5); // left ear
+      ellipse(-12, 0, 5, 5); // right ear
+      fill(48, 44, 52);
+      ellipse(0, 0, 25, 25); // head
+
+      if (this.beerCan) {
+        fill(64, 156, 52);
+        rect(20, 14, 10, 6);
+        rect(26, 15, 10, 3);
+
+        fill(9, 88, 36);
+        rect(22, 15, 6, 4);
+        rect(35, 14, 2, 5);
+
+        fill(212, 18, 23);
+        ellipse(26, 17, 2, 2);
+      }
+
+      pop();
+    }
+  }
+}
+
+class NpcMovement {
+  constructor(velocity, direction) {
+    this.velocity = velocity;
+    this.direction = direction;
+  }
+
+  update(hoboObject) {
+    hoboObject.x += this.velocity * this.direction;
+
+    if (hoboObject.x > width + 40) {
+      hoboObject.x = -40;
+    }
+
+    if (hoboObject.x < -40) {
+      hoboObject.x = width + 40;
     }
   }
 }
@@ -323,43 +410,53 @@ let train = [
 
 let hobo = [
   new Character(
-    100,
+    0,
     130,
     "rgb(120, 36, 36)",
     "rgb(140, 112, 98)",
     "rgb(66, 40, 27)",
-    true
+    true,
+    1,
+    false
   ),
   new Character(
-    100,
+    0,
     270,
     "rgb(120, 36, 36)",
     "rgb(140, 112, 98)",
     "rgb(66, 40, 27)",
-    true
+    true,
+    -1,
+    false
   ),
   new Character(
-    100,
+    0,
     430,
     "rgb(120, 36, 36)",
     "rgb(140, 112, 98)",
     "rgb(66, 40, 27)",
+    true,
+    1,
     true
   ),
   new Character(
-    100,
+    0,
     590,
     "rgb(120, 36, 36)",
     "rgb(140, 112, 98)",
     "rgb(66, 40, 27)",
+    true,
+    -1,
     true
   ),
   new Character(
-    100,
+    0,
     830,
     "rgb(120, 36, 36)",
     "rgb(140, 112, 98)",
     "rgb(66, 40, 27)",
+    true,
+    1,
     true
   ),
 ];
