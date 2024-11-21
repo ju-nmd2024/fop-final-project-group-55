@@ -177,7 +177,8 @@ class Character {
     pantsColor,
     beerCan,
     direction,
-    flipped
+    flipped,
+    rotation
   ) {
     this.x = x;
     this.y = y;
@@ -187,6 +188,7 @@ class Character {
     this.beerCan = beerCan;
     this.direction = direction;
     this.flipped = flipped;
+    this.rotation = rotation;
     this.movement = new NpcMovement(7, this.direction);
   }
 
@@ -197,7 +199,7 @@ class Character {
     if (this.flipped) {
       push();
       translate(x, y);
-      rotate(HALF_PI * this.direction);
+      rotate(this.rotation * this.direction);
 
       strokeWeight(0);
       fill(52, 56, 48);
@@ -233,7 +235,7 @@ class Character {
     } else {
       push();
       translate(x, y);
-      rotate(HALF_PI * this.direction);
+      rotate(this.rotation * this.direction);
 
       strokeWeight(0);
       fill(52, 56, 48);
@@ -387,7 +389,10 @@ let player = new Character(
   "rgb(40, 188, 132)",
   "rgb(244, 196, 172)",
   "rgb(4, 148, 172)",
-  false
+  false,
+  1,
+  true,
+  0
 );
 
 let track = [
@@ -417,7 +422,8 @@ let hobo = [
     "rgb(66, 40, 27)",
     true,
     1,
-    false
+    false,
+    HALF_PI
   ),
   new Character(
     0,
@@ -427,7 +433,8 @@ let hobo = [
     "rgb(66, 40, 27)",
     true,
     -1,
-    false
+    false,
+    HALF_PI
   ),
   new Character(
     0,
@@ -437,7 +444,8 @@ let hobo = [
     "rgb(66, 40, 27)",
     true,
     1,
-    true
+    true,
+    HALF_PI
   ),
   new Character(
     0,
@@ -447,7 +455,8 @@ let hobo = [
     "rgb(66, 40, 27)",
     true,
     -1,
-    true
+    true,
+    HALF_PI
   ),
   new Character(
     0,
@@ -457,6 +466,7 @@ let hobo = [
     "rgb(66, 40, 27)",
     true,
     1,
-    true
+    true,
+    HALF_PI
   ),
 ];
