@@ -1,7 +1,7 @@
 let state = "game";
 
 function setup() {
-  createCanvas(600, 1030);
+  createCanvas(600, 1100);
 }
 
 function startScreen() {
@@ -295,7 +295,7 @@ class NpcMovement {
 
 function stationEntrance() {
   push();
-  translate(0, 30);
+  translate(0, 100);
   strokeWeight(0);
   fill(200, 176, 160);
   rect(300 - 85, 920, 170, 80); //main house
@@ -344,6 +344,7 @@ function trainStation() {
   rect(-10, 800, 620, 60);
   rect(-10, 100, 620, 60);
   rect(-10, 400, 620, 60);
+  rect(-10, 960, 620, 60);
 
   //Your tent
   push();
