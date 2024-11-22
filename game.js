@@ -24,15 +24,15 @@ function startScreen() {
 }
 
 function gameScreen() {
-  hud();
   trainStation();
   for (let trackObject of track) {
     trackObject.trainTracks();
   }
-  player.character();
   for (let trainObject of train) {
     trainObject.train();
   }
+  player.character();
+  movement();
   // written with help from chatGPT (https://chatgpt.com/share/673e82da-4f54-8000-b19f-0b1f423cbfbe)
   if (frameCount % 6 === 0) {
     for (let hoboObject of hobo) {
@@ -46,6 +46,7 @@ function gameScreen() {
     // end of help from chatGPT (https://chatgpt.com/share/673e82da-4f54-8000-b19f-0b1f423cbfbe)
   }
   stationEntrance();
+  hud();
 }
 
 function hud() {
@@ -72,6 +73,7 @@ function callingStatesWithSpaceBar() {
   } else if (keyIsDown(32) && state === "loss") {
     state = "game";
   }
+  return false;
 }
 
 class ScreenText {
@@ -293,6 +295,37 @@ class NpcMovement {
   }
 }
 
+function movement() {
+  if (keyIsDown(38) && !keyIsDown(39) && !keyIsDown(37)) {
+    player.y = player.y - 6;
+    player.rotation = 0;
+    if (frameCount % 6 === 0) {
+      player.flipped = !player.flipped;
+    }
+  }
+  if (keyIsDown(40) && !keyIsDown(39) && !keyIsDown(37)) {
+    player.y = player.y + 6;
+    player.rotation = HALF_PI * 2;
+    if (frameCount % 6 === 0) {
+      player.flipped = !player.flipped;
+    }
+  }
+  if (keyIsDown(39) && !keyIsDown(40) && !keyIsDown(38)) {
+    player.x = player.x + 6;
+    player.rotation = HALF_PI;
+    if (frameCount % 6 === 0) {
+      player.flipped = !player.flipped;
+    }
+  }
+  if (keyIsDown(37) && !keyIsDown(40) && !keyIsDown(38)) {
+    player.x = player.x - 6;
+    player.rotation = HALF_PI * 3;
+    if (frameCount % 6 === 0) {
+      player.flipped = !player.flipped;
+    }
+  }
+}
+
 function stationEntrance() {
   push();
   translate(0, 100);
@@ -385,8 +418,8 @@ let win = new ScreenText("You won!", "Press space to try again");
 let loss = new ScreenText("You lost!", "Press space to try again");
 
 let player = new Character(
-  50,
-  780,
+  200,
+  990,
   "rgb(40, 188, 132)",
   "rgb(244, 196, 172)",
   "rgb(4, 148, 172)",
