@@ -25,6 +25,7 @@ function startScreen() {
 
 function gameScreen() {
   trainStation();
+  moveTrains();
   for (let trackObject of track) {
     trackObject.trainTracks();
   }
@@ -154,7 +155,7 @@ class Train {
     }
     if (this.carAmount >= 2) {
       fill(50);
-      rect(x - 300, y - 4, 300, 8); //Thing connecting the train
+      rect(x - 50, y - 4, 50, 8); //Thing connecting the train
       fill(this.trainColor);
       rect(x - 140, y - 30, 125, 60, 5); // Back train car
       fill(20);
@@ -326,6 +327,36 @@ function movement() {
   }
 }
 
+function moveTrains() {
+  for (let trainObject of train) {
+    trainObject.x += 10; // Adjust speed here
+    if (trainObject.x > width + 200) {
+      trainObject.x = -350; // Reset position when the train moves out of the canvas
+
+    }
+  }
+
+}
+
+function draw() {
+  background(30);
+  callingStatesWithSpaceBar();
+
+  // What state = to what screens
+  if (state === "start") {
+    startScreen();
+  } else if (state === "game") {
+    gameScreen();
+  } else if (state === "win") {
+    gameScreen();
+    win.screenText();
+  } else if (state === "loss") {
+    gameScreen();
+    loss.screenText();
+  }
+}
+
+
 function stationEntrance() {
   push();
   translate(0, 100);
@@ -439,12 +470,12 @@ let track = [
 ];
 
 let train = [
-  new Train(100, 210, "rgb(40, 188, 132)", 1),
+  new Train(300, 210, "rgb(40, 188, 132)", 1),
   new Train(100, 340, "rgb(120, 36, 36)", 2),
-  new Train(100, 510, "rgb(120, 136, 0)", 2),
-  new Train(100, 670, "rgb(40, 188, 132)", 0),
-  new Train(100, 750, "rgb(120, 36, 36)", 1),
-  new Train(100, 910, "rgb(120, 136, 0)", 2),
+  new Train(600, 510, "rgb(120, 136, 0)", 2),
+  new Train(200, 670, "rgb(40, 188, 132)", 0),
+  new Train(800, 750, "rgb(120, 36, 36)", 1),
+  new Train(200, 910, "rgb(120, 136, 0)", 2),
 ];
 
 let hobo = [
