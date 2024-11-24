@@ -43,32 +43,48 @@ function gameScreen() {
   }
   stationEntrance();
 
-  hud();
+  headsUpDisplay.draw();
+  headsUpDisplay.playerResetAndScoreGiven();
+  headsUpDisplay.zeroLivesLeft();
 }
 
-function hud() {
-  strokeWeight(0);
-  textAlign(LEFT);
-  fill(0);
-  rect(0, 0, 600, 40);
-  fill(256, 12, 12);
-  ellipse(100, 20, 20, 20);
-  ellipse(130, 20, 20, 20);
-  ellipse(160, 20, 20, 20);
-  fill(255);
-  textSize(10);
-  text("LIVES LEFT:", 22, 24);
-  text("SCORE:", 470, 25);
-}
+class HeadsUpDisplay {
+  constructor(livesLeft = 3, score = 0, circleSize = 25) {
+    this.livesLeft = livesLeft;
+    this.score = score;
+    this.circleSize = circleSize;
+  }
 
-function callingStatesWithSpaceBar() {
-  //Using the spacebar lets you navigate game menus
-  if (keyIsDown(32) && state === "start") {
-    state = "game";
-  } else if (keyIsDown(32) && state === "win") {
-    state = "game";
-  } else if (keyIsDown(32) && state === "loss") {
-    state = "game";
+  draw() {
+    strokeWeight(0);
+    textAlign(LEFT);
+    fill(0);
+    rect(0, 0, 600, 40);
+    fill(255);
+    textSize(20);
+    text("LIVES LEFT:", 22, 28);
+    text("SCORE:", 455, 28);
+    textSize(35);
+    text(this.score, 540, 33);
+
+    if (this.livesLeft <= 3) {
+      for (let i = 0; i < this.livesLeft; i++) {
+        fill(255, 0, 0);
+        ellipse(160 + i * 30, 21, this.circleSize);
+      }
+    }
+  }
+  playerResetAndScoreGiven() {
+    if (player.y <= 125 && player.x >= 230 && player.x <= 370) {
+      this.score = this.score + 1;
+      player.y = 990;
+      player.x = 200;
+    }
+  }
+  zeroLivesLeft() {
+    if (this.livesLeft < 1) {
+      state = "loss";
+    }
   }
 }
 
@@ -377,13 +393,14 @@ function trainStation() {
   fill(170);
   rect(-10, 560, 620, 60);
   rect(-10, 800, 620, 60);
-  rect(-10, 100, 620, 60);
+  rect(-10, 150, 620, 60);
   rect(-10, 400, 620, 60);
   rect(-10, 960, 620, 60);
 
   //Your tent
   push();
-  translate(0, 11);
+  translate(-239, -11);
+  scale(1.8);
   fill(226, 194, 92);
   strokeWeight(0);
   triangle(300, 45, 260, 82, 340, 82);
@@ -400,7 +417,14 @@ function trainStation() {
 
 function draw() {
   background(30);
-  callingStatesWithSpaceBar();
+
+  if (keyIsDown(32) && state === "start") {
+    state = "game";
+  } else if (keyIsDown(32) && state === "win") {
+    state = "game";
+  } else if (keyIsDown(32) && state === "loss") {
+    state = "game";
+  }
 
   //What state = to what screens
   if (state === "start") {
@@ -416,6 +440,8 @@ function draw() {
   }
 }
 
+let headsUpDisplay = new HeadsUpDisplay();
+
 let win = new ScreenText("You won!", "Press space to try again");
 let loss = new ScreenText("You lost!", "Press space to try again");
 
@@ -429,7 +455,7 @@ let player = new Character(
   1,
   true,
   0,
-  16
+  15
   /*
     x,
     y,
@@ -445,7 +471,7 @@ let player = new Character(
 );
 
 let track = [
-  new Traintracks(0, 160),
+  new Traintracks(0, 210),
   new Traintracks(0, 290),
   new Traintracks(0, 460),
   new Traintracks(0, 620),
@@ -455,7 +481,7 @@ let track = [
 ];
 
 let train = [
-  new Train(300, 210, "rgb(40, 188, 132)", 1, 5, -400),
+  new Train(300, 260, "rgb(40, 188, 132)", 1, 5, -400),
   new Train(100, 340, "rgb(120, 36, 36)", 2, 5, -400),
   new Train(600, 510, "rgb(120, 136, 0)", 2, 5, -400),
   new Train(200, 670, "rgb(40, 188, 132)", 0, 5, -400),
@@ -467,7 +493,7 @@ let train = [
 let hobo = [
   new Character(
     0,
-    130,
+    180,
     "rgb(120, 36, 36)",
     "rgb(140, 112, 98)",
     "rgb(66, 40, 27)",
@@ -476,17 +502,7 @@ let hobo = [
     false,
     HALF_PI
   ),
-  new Character(
-    0,
-    270,
-    "rgb(120, 36, 36)",
-    "rgb(140, 112, 98)",
-    "rgb(66, 40, 27)",
-    true,
-    -1,
-    false,
-    HALF_PI
-  ),
+
   new Character(
     0,
     430,
