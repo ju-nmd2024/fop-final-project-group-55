@@ -17,7 +17,7 @@ function startScreen() {
 
   //Adds Station entrance to startScreen
   push();
-  translate(-600, -2060);
+  translate(-600, -2200);
   scale(3);
   stationEntrance();
   pop();
@@ -25,28 +25,24 @@ function startScreen() {
 
 function gameScreen() {
   trainStation();
-  moveTrains();
+
   for (let trackObject of track) {
-    trackObject.trainTracks();
+    trackObject.draw();
   }
   for (let trainObject of train) {
-    trainObject.train();
-  }
-  player.character();
-  movement();
-  // written with help from chatGPT (https://chatgpt.com/share/673e82da-4f54-8000-b19f-0b1f423cbfbe)
-  if (frameCount % 6 === 0) {
-    for (let hoboObject of hobo) {
-      hoboObject.flipped = !hoboObject.flipped;
-    }
+    trainObject.draw();
+    trainObject.update();
   }
 
+  player.draw();
+  player.playerMovement();
+
   for (let hoboObject of hobo) {
-    hoboObject.movement.update(hoboObject);
-    hoboObject.character();
-    // end of help from chatGPT (https://chatgpt.com/share/673e82da-4f54-8000-b19f-0b1f423cbfbe)
+    hoboObject.draw();
+    hoboObject.hoboMovement();
   }
   stationEntrance();
+
   hud();
 }
 
@@ -74,7 +70,6 @@ function callingStatesWithSpaceBar() {
   } else if (keyIsDown(32) && state === "loss") {
     state = "game";
   }
-  return false;
 }
 
 class ScreenText {
@@ -83,7 +78,7 @@ class ScreenText {
     this.bottomText = bottomText;
   }
 
-  screenText() {
+  draw() {
     textSize(70);
     textAlign(CENTER);
     strokeWeight(0);
@@ -108,7 +103,7 @@ class Traintracks {
     this.y = y;
   }
 
-  trainTracks() {
+  draw() {
     let x = this.x;
     let y = this.y;
     strokeWeight(7);
@@ -125,14 +120,16 @@ class Traintracks {
 }
 
 class Train {
-  constructor(x, y, trainColor, carAmount) {
+  constructor(x, y, trainColor, carAmount, velocity, resetPos) {
     this.x = x;
     this.y = y;
     this.trainColor = trainColor;
     this.carAmount = carAmount;
+    this.velocity = velocity;
+    this.resetPos = resetPos;
   }
 
-  train() {
+  draw() {
     let x = this.x;
     let y = this.y;
     strokeWeight(0);
@@ -169,6 +166,13 @@ class Train {
     rect(x + 140, y - 30, 70, 60, 5); // Train back body
     rect(x + 185, y - 22, 40, 44); // Glass cover
   }
+
+  update() {
+    this.x += this.velocity;
+    if (this.x > width + 200) {
+      this.x = this.resetPos;
+    }
+  }
 }
 
 class Character {
@@ -181,7 +185,8 @@ class Character {
     beerCan,
     direction,
     flipped,
-    rotation
+    rotation,
+    velocity = 7
   ) {
     this.x = x;
     this.y = y;
@@ -192,10 +197,10 @@ class Character {
     this.direction = direction;
     this.flipped = flipped;
     this.rotation = rotation;
-    this.movement = new NpcMovement(7, this.direction);
+    this.velocity = velocity;
   }
 
-  character() {
+  draw() {
     let x = this.x;
     let y = this.y;
 
@@ -275,87 +280,53 @@ class Character {
       pop();
     }
   }
-}
-
-class NpcMovement {
-  constructor(velocity, direction) {
-    this.velocity = velocity;
-    this.direction = direction;
+  playerMovement() {
+    if (keyIsDown(38) && !keyIsDown(39) && !keyIsDown(37)) {
+      this.y -= this.velocity;
+      this.rotation = 0;
+      if (frameCount % 6 === 0) {
+        this.flipped = !this.flipped;
+      }
+    }
+    if (keyIsDown(40) && !keyIsDown(39) && !keyIsDown(37)) {
+      this.y += this.velocity;
+      this.rotation = HALF_PI * 2;
+      if (frameCount % 6 === 0) {
+        this.flipped = !this.flipped;
+      }
+    }
+    if (keyIsDown(39) && !keyIsDown(40) && !keyIsDown(38)) {
+      this.x += this.velocity;
+      this.rotation = HALF_PI;
+      if (frameCount % 6 === 0) {
+        this.flipped = !this.flipped;
+      }
+    }
+    if (keyIsDown(37) && !keyIsDown(40) && !keyIsDown(38)) {
+      this.x -= this.velocity;
+      this.rotation = HALF_PI * 3;
+      if (frameCount % 6 === 0) {
+        this.flipped = !this.flipped;
+      }
+    }
   }
+  hoboMovement() {
+    this.x += this.velocity * this.direction;
 
-  update(hoboObject) {
-    hoboObject.x += this.velocity * this.direction;
-
-    if (hoboObject.x > width + 40) {
-      hoboObject.x = -40;
+    if (this.x > width + 40) {
+      this.x = -40;
     }
 
-    if (hoboObject.x < -40) {
-      hoboObject.x = width + 40;
+    if (this.x < -40) {
+      this.x = width + 40;
     }
-  }
-}
-
-function movement() {
-  if (keyIsDown(38) && !keyIsDown(39) && !keyIsDown(37)) {
-    player.y = player.y - 6;
-    player.rotation = 0;
+    // written with help from chatGPT, then moved around a bit (https://chatgpt.com/share/673e82da-4f54-8000-b19f-0b1f423cbfbe)
     if (frameCount % 6 === 0) {
-      player.flipped = !player.flipped;
-    }
-  }
-  if (keyIsDown(40) && !keyIsDown(39) && !keyIsDown(37)) {
-    player.y = player.y + 6;
-    player.rotation = HALF_PI * 2;
-    if (frameCount % 6 === 0) {
-      player.flipped = !player.flipped;
-    }
-  }
-  if (keyIsDown(39) && !keyIsDown(40) && !keyIsDown(38)) {
-    player.x = player.x + 6;
-    player.rotation = HALF_PI;
-    if (frameCount % 6 === 0) {
-      player.flipped = !player.flipped;
-    }
-  }
-  if (keyIsDown(37) && !keyIsDown(40) && !keyIsDown(38)) {
-    player.x = player.x - 6;
-    player.rotation = HALF_PI * 3;
-    if (frameCount % 6 === 0) {
-      player.flipped = !player.flipped;
+      this.flipped = !this.flipped;
+      //End of help (https://chatgpt.com/share/673e82da-4f54-8000-b19f-0b1f423cbfbe)
     }
   }
 }
-
-function moveTrains() {
-  for (let trainObject of train) {
-    trainObject.x += 10; // Adjust speed here
-    if (trainObject.x > width + 200) {
-      trainObject.x = -350; // Reset position when the train moves out of the canvas
-
-    }
-  }
-
-}
-
-function draw() {
-  background(30);
-  callingStatesWithSpaceBar();
-
-  // What state = to what screens
-  if (state === "start") {
-    startScreen();
-  } else if (state === "game") {
-    gameScreen();
-  } else if (state === "win") {
-    gameScreen();
-    win.screenText();
-  } else if (state === "loss") {
-    gameScreen();
-    loss.screenText();
-  }
-}
-
 
 function stationEntrance() {
   push();
@@ -438,10 +409,10 @@ function draw() {
     gameScreen();
   } else if (state === "win") {
     gameScreen();
-    win.screenText();
+    win.draw();
   } else if (state === "loss") {
     gameScreen();
-    loss.screenText();
+    loss.draw();
   }
 }
 
@@ -457,7 +428,20 @@ let player = new Character(
   false,
   1,
   true,
-  0
+  0,
+  16
+  /*
+    x,
+    y,
+    shirtColor,
+    skinColor,
+    pantsColor,
+    beerCan,
+    direction,
+    flipped,
+    rotation,
+    velocity
+    */
 );
 
 let track = [
@@ -467,15 +451,17 @@ let track = [
   new Traintracks(0, 620),
   new Traintracks(0, 700),
   new Traintracks(0, 860),
+  //              x,y
 ];
 
 let train = [
-  new Train(300, 210, "rgb(40, 188, 132)", 1),
-  new Train(100, 340, "rgb(120, 36, 36)", 2),
-  new Train(600, 510, "rgb(120, 136, 0)", 2),
-  new Train(200, 670, "rgb(40, 188, 132)", 0),
-  new Train(800, 750, "rgb(120, 36, 36)", 1),
-  new Train(200, 910, "rgb(120, 136, 0)", 2),
+  new Train(300, 210, "rgb(40, 188, 132)", 1, 5, -400),
+  new Train(100, 340, "rgb(120, 36, 36)", 2, 5, -400),
+  new Train(600, 510, "rgb(120, 136, 0)", 2, 5, -400),
+  new Train(200, 670, "rgb(40, 188, 132)", 0, 5, -400),
+  new Train(800, 750, "rgb(120, 36, 36)", 1, 5, -400),
+  new Train(200, 910, "rgb(120, 136, 0)", 2, 5, -400),
+  //        x, y, trainColor, carAmount, velocity, resetPos
 ];
 
 let hobo = [
@@ -532,6 +518,19 @@ let hobo = [
     true,
     1,
     true,
-    HALF_PI
+    HALF_PI,
+    12
+    /*
+    x,
+    y,
+    shirtColor,
+    skinColor,
+    pantsColor,
+    beerCan,
+    direction,
+    flipped,
+    rotation,
+    velocity
+    */
   ),
 ];
