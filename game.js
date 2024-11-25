@@ -342,6 +342,9 @@ class Character {
       //End of help (https://chatgpt.com/share/673e82da-4f54-8000-b19f-0b1f423cbfbe)
     }
   }
+  hoboHitbox() {
+    //
+  }
 }
 
 function stationEntrance() {
@@ -481,11 +484,11 @@ let track = [
 ];
 
 let train = [
-  new Train(300, 260, "rgb(40, 188, 132)", 1, 5, -400),
+  new Train(300, 260, "rgb(40, 188, 132)", 2, 5, -400),
   new Train(100, 340, "rgb(120, 36, 36)", 2, 5, -400),
   new Train(600, 510, "rgb(120, 136, 0)", 2, 5, -400),
-  new Train(200, 670, "rgb(40, 188, 132)", 0, 5, -400),
-  new Train(800, 750, "rgb(120, 36, 36)", 1, 5, -400),
+  new Train(700, 670, "rgb(40, 188, 132)", 2, 5, -400),
+  new Train(800, 750, "rgb(120, 36, 36)", 2, 5, -400),
   new Train(200, 910, "rgb(120, 136, 0)", 2, 5, -400),
   //        x, y, trainColor, carAmount, velocity, resetPos
 ];
@@ -498,7 +501,7 @@ let hobo = [
     "rgb(140, 112, 98)",
     "rgb(66, 40, 27)",
     true,
-    1,
+    -1,
     false,
     HALF_PI
   ),
@@ -534,8 +537,8 @@ let hobo = [
     true,
     1,
     true,
-    HALF_PI,
-    12
+    HALF_PI
+
     /*
     x,
     y,
