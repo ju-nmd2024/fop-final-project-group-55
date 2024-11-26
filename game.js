@@ -40,9 +40,15 @@ function gameScreen() {
   for (let hoboObject of hobo) {
     hoboObject.draw();
     hoboObject.hoboMovement();
-  }
-  stationEntrance();
 
+    if (dist(player.x, player.y, hoboObject.x, hoboObject.y) < 50) {
+      headsUpDisplay.livesLeft--; // Lose a life
+      player.x = 300;            
+      player.y = 980;
+      break;
+  }}
+  
+  stationEntrance();
   headsUpDisplay.draw();
   headsUpDisplay.playerResetAndScoreGiven();
   headsUpDisplay.zeroLivesLeft();
