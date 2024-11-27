@@ -34,6 +34,13 @@ function gameScreen() {
     trainObject.update();
   }
 
+  // Move player along the trains
+  for (let trainObject of train) {
+    if (isPlayerOnTrain(player, trainObject)) {
+      player.x += trainObject.velocity;
+    }
+  }
+
   player.draw();
   player.playerMovement();
 
@@ -52,6 +59,16 @@ function gameScreen() {
   headsUpDisplay.draw();
   headsUpDisplay.playerResetAndScoreGiven();
   headsUpDisplay.zeroLivesLeft();
+}
+
+// Check players position if it's on a train
+function isPlayerOnTrain(player, train) { //using classes Character and Train
+  return (
+    player.y >= train.y - 30 &&
+    player.y <= train.y + 30 &&
+    player.x >= train.x - 70 &&
+    player.x <= train.x + 200
+  );
 }
 
 class HeadsUpDisplay {
