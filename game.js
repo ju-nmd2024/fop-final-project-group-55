@@ -45,6 +45,11 @@ function gameScreen() {
   for (let trainObject of train) {
     if (isPlayerOnTrain(player, trainObject)) {
       player.x += trainObject.velocity;
+
+      if (player.x > border.maxX) {
+        player.x = border.maxX;
+    
+      }
     }
   }
 
