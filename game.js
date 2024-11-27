@@ -1,5 +1,12 @@
 let state = "game";
 
+let border = {
+  minX: 25,
+  maxX: 575,
+  minY: 50,
+  maxY: 1020
+};
+
 function setup() {
   createCanvas(600, 1100);
 }
@@ -323,6 +330,10 @@ class Character {
     if (keyIsDown(38) && !keyIsDown(39) && !keyIsDown(37)) {
       this.y -= this.velocity;
       this.rotation = 0;
+
+      if (this.y < border.minY) {
+        this.y = border.minY;
+      }
       if (frameCount % 6 === 0) {
         this.flipped = !this.flipped;
       }
@@ -330,6 +341,10 @@ class Character {
     if (keyIsDown(40) && !keyIsDown(39) && !keyIsDown(37)) {
       this.y += this.velocity;
       this.rotation = HALF_PI * 2;
+
+      if (this.y > border.maxY) {
+        this.y = border.maxY;
+      }
       if (frameCount % 6 === 0) {
         this.flipped = !this.flipped;
       }
@@ -337,6 +352,10 @@ class Character {
     if (keyIsDown(39) && !keyIsDown(40) && !keyIsDown(38)) {
       this.x += this.velocity;
       this.rotation = HALF_PI;
+
+      if (this.x > border.maxX) {
+        this.x = border.maxX;
+      }
       if (frameCount % 6 === 0) {
         this.flipped = !this.flipped;
       }
@@ -344,6 +363,11 @@ class Character {
     if (keyIsDown(37) && !keyIsDown(40) && !keyIsDown(38)) {
       this.x -= this.velocity;
       this.rotation = HALF_PI * 3;
+      
+      if (this.x < border.minX) {
+        this.x = border.minX;
+      }
+
       if (frameCount % 6 === 0) {
         this.flipped = !this.flipped;
       }
