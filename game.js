@@ -4,7 +4,7 @@ let border = {
   minX: 25,
   maxX: 575,
   minY: 50,
-  maxY: 1020
+  maxY: 1020,
 };
 
 function setup() {
@@ -17,8 +17,12 @@ function startScreen() {
   textSize(55);
   text("Survive Nässjö Station", 300, 300);
   textSize(27);
-  text("Objective: Get home to your tent safely", 300, 350);
+  translate(0, -40);
+  text("How to play: Avoid the hobos!", 300, 390);
+  text("Climb the trains & don't go on the tracks", 300, 430);
+
   textSize(15);
+  translate(0, 80);
   text("Use your arrows to play", 300, 390);
   text("Press space to start", 300, 420);
 
@@ -48,13 +52,11 @@ function gameScreen() {
 
       if (player.x > border.maxX) {
         player.x = border.maxX;
-    
       }
     }
   }
 
   player.draw();
-  player.playerMovement();
 
   for (let hoboObject of hobo) {
     hoboObject.draw();
@@ -62,11 +64,11 @@ function gameScreen() {
 
     if (dist(player.x, player.y, hoboObject.x, hoboObject.y) < 50) {
       headsUpDisplay.livesLeft--; // Lose a life
-      player.x = 300;            
-      player.y = 980;
-      break;
-  }}
-  
+      player.x = 300;
+      player.y = 995;
+    }
+  }
+
   stationEntrance();
   headsUpDisplay.draw();
   headsUpDisplay.playerResetAndScoreGiven();
@@ -74,7 +76,8 @@ function gameScreen() {
 }
 
 // Check players position if it's on a train
-function isPlayerOnTrain(player, train) { //using classes Character and Train
+function isPlayerOnTrain(player, train) {
+  //using classes Character and Train
   return (
     player.y >= train.y - 30 &&
     player.y <= train.y + 30 &&
@@ -112,8 +115,9 @@ class HeadsUpDisplay {
   playerResetAndScoreGiven() {
     if (player.y <= 125 && player.x >= 230 && player.x <= 370) {
       this.score = this.score + 1;
-      player.y = 990;
-      player.x = 200;
+      state = "win";
+      player.x = 300;
+      player.y = 995;
     }
   }
   zeroLivesLeft() {
@@ -237,7 +241,8 @@ class Character {
     direction,
     flipped,
     rotation,
-    velocity = 7
+    velocity = 7,
+    feetMovementSpeed = 6
   ) {
     this.x = x;
     this.y = y;
@@ -249,6 +254,7 @@ class Character {
     this.flipped = flipped;
     this.rotation = rotation;
     this.velocity = velocity;
+    this.feetMovementSpeed = feetMovementSpeed;
   }
 
   draw() {
@@ -368,7 +374,7 @@ class Character {
     if (keyIsDown(37) && !keyIsDown(40) && !keyIsDown(38)) {
       this.x -= this.velocity;
       this.rotation = HALF_PI * 3;
-      
+
       if (this.x < border.minX) {
         this.x = border.minX;
       }
@@ -381,15 +387,15 @@ class Character {
   hoboMovement() {
     this.x += this.velocity * this.direction;
 
-    if (this.x > width + 40) {
-      this.x = -40;
+    if (this.x > 600 + 60) {
+      this.x = -60;
     }
 
-    if (this.x < -40) {
-      this.x = width + 40;
+    if (this.x < -60) {
+      this.x = 600 + 60;
     }
     // written with help from chatGPT, then moved around a bit (https://chatgpt.com/share/673e82da-4f54-8000-b19f-0b1f423cbfbe)
-    if (frameCount % 6 === 0) {
+    if (frameCount % this.feetMovementSpeed === 0) {
       this.flipped = !this.flipped;
       //End of help (https://chatgpt.com/share/673e82da-4f54-8000-b19f-0b1f423cbfbe)
     }
@@ -486,23 +492,25 @@ function draw() {
     startScreen();
   } else if (state === "game") {
     gameScreen();
+    player.playerMovement();
   } else if (state === "win") {
     gameScreen();
     win.draw();
   } else if (state === "loss") {
     gameScreen();
     loss.draw();
+    headsUpDisplay.livesLeft = 3;
   }
 }
 
 let headsUpDisplay = new HeadsUpDisplay();
 
-let win = new ScreenText("You won!", "Press space to try again");
+let win = new ScreenText("You got a point!", "Press space to play again");
 let loss = new ScreenText("You lost!", "Press space to try again");
 
 let player = new Character(
-  200,
-  990,
+  300,
+  995,
   "rgb(40, 188, 132)",
   "rgb(244, 196, 172)",
   "rgb(4, 148, 172)",
@@ -511,6 +519,7 @@ let player = new Character(
   true,
   0,
   15
+
   /*
     x,
     y,
@@ -521,7 +530,8 @@ let player = new Character(
     direction,
     flipped,
     rotation,
-    velocity
+    velocity,
+    feetMovementSpeed
     */
 );
 
@@ -555,7 +565,9 @@ let hobo = [
     true,
     -1,
     false,
-    HALF_PI
+    HALF_PI,
+    6,
+    4
   ),
 
   new Character(
@@ -567,7 +579,8 @@ let hobo = [
     true,
     1,
     true,
-    HALF_PI
+    HALF_PI,
+    3
   ),
   new Character(
     0,
@@ -578,7 +591,8 @@ let hobo = [
     true,
     -1,
     true,
-    HALF_PI
+    HALF_PI,
+    3
   ),
   new Character(
     0,
@@ -589,8 +603,8 @@ let hobo = [
     true,
     1,
     true,
-    HALF_PI
-
+    HALF_PI,
+    3
     /*
     x,
     y,
@@ -601,7 +615,8 @@ let hobo = [
     direction,
     flipped,
     rotation,
-    velocity
+    velocity,
+    feetMovementSpeed
     */
   ),
 ];
