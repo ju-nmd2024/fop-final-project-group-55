@@ -35,7 +35,11 @@ function startScreen() {
 }
 
 function gameScreen() {
-  trainStation();
+  tent();
+
+  for (let platformObject of platform) {
+    platformObject.draw();
+  }
 
   for (let trackObject of track) {
     trackObject.draw();
@@ -400,8 +404,27 @@ class Character {
       //End of help (https://chatgpt.com/share/673e82da-4f54-8000-b19f-0b1f423cbfbe)
     }
   }
-  hoboHitbox() {
-    //
+}
+
+class Platform {
+  constructor(x, y) {
+    this.x = x;
+    this.y = y;
+  }
+
+  draw() {
+    strokeWeight(10);
+    stroke(255, 255, 255);
+    fill(170);
+    rect(this.x, this.y, 620, 60);
+    push();
+    strokeWeight(0);
+    fill(255);
+    textAlign(CENTER);
+    textSize(7);
+    text("DONT GO ON THE TRACKS", this.x + 300, this.y + 15);
+    text("DONT GO ON THE TRACKS", this.x + 540, this.y + 15);
+    text("DONT GO ON THE TRACKS", this.x + 80, this.y + 15);
   }
 }
 
@@ -447,18 +470,7 @@ function stationEntrance() {
   pop();
 }
 
-function trainStation() {
-  //Railway platforms
-  strokeWeight(10);
-  stroke(255, 255, 255);
-  fill(170);
-  rect(-10, 560, 620, 60);
-  rect(-10, 800, 620, 60);
-  rect(-10, 150, 620, 60);
-  rect(-10, 400, 620, 60);
-  rect(-10, 960, 620, 60);
-
-  //Your tent
+function tent() {
   push();
   translate(-239, -11);
   scale(1.8);
@@ -503,6 +515,15 @@ function draw() {
   }
 }
 
+let platform = [
+  new Platform(-10, 150),
+  new Platform(-10, 400),
+  new Platform(-10, 560),
+  new Platform(-10, 800),
+  new Platform(-10, 960),
+  //             x, y
+];
+
 let headsUpDisplay = new HeadsUpDisplay();
 
 let win = new ScreenText("You got a point!", "Press space to play again");
@@ -542,7 +563,7 @@ let track = [
   new Traintracks(0, 620),
   new Traintracks(0, 700),
   new Traintracks(0, 860),
-  //              x,y
+  //              x, y
 ];
 
 let train = [
