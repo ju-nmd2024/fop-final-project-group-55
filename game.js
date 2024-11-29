@@ -7,8 +7,108 @@ let border = {
   maxY: 1020,
 };
 
+let player;
+let hobo;
+
 function setup() {
   createCanvas(600, 1100);
+  frameRate(90);
+
+  player = new Character(
+    300,
+    995,
+    "rgb(40, 188, 132)",
+    "rgb(244, 196, 172)",
+    "rgb(4, 148, 172)",
+    false,
+    1,
+    true,
+    0,
+    3,
+    10
+    /*
+      x,
+      y,
+      shirtColor,
+      skinColor,
+      pantsColor,
+      beerCan,
+      direction,
+      flipped,
+      rotation,
+      velocity,
+      feetMovementSpeed
+      */
+  );
+
+  hobo = [
+    new Character(
+      randomNumber(0, 600),
+      180,
+      "rgb(120, 36, 36)",
+      "rgb(140, 112, 98)",
+      "rgb(66, 40, 27)",
+      true,
+      -1,
+      false,
+      HALF_PI,
+      3,
+      10
+    ),
+
+    new Character(
+      randomNumber(0, 600),
+      430,
+      "rgb(120, 36, 36)",
+      "rgb(140, 112, 98)",
+      "rgb(66, 40, 27)",
+      true,
+      1,
+      true,
+      HALF_PI,
+      1.5,
+      16
+    ),
+    new Character(
+      randomNumber(0, 600),
+      590,
+      "rgb(120, 36, 36)",
+      "rgb(140, 112, 98)",
+      "rgb(66, 40, 27)",
+      true,
+      -1,
+      true,
+      HALF_PI,
+      1,
+      20
+    ),
+    new Character(
+      randomNumber(0, 600),
+      830,
+      "rgb(120, 36, 36)",
+      "rgb(140, 112, 98)",
+      "rgb(66, 40, 27)",
+      true,
+      1,
+      true,
+      HALF_PI,
+      1.5,
+      16
+      /*
+      x,
+      y,
+      shirtColor,
+      skinColor,
+      pantsColor,
+      beerCan,
+      direction,
+      flipped,
+      rotation,
+      velocity,
+      feetMovementSpeed
+      */
+    ),
+  ];
 }
 
 function startScreen() {
@@ -51,7 +151,7 @@ function gameScreen() {
 
   // Move player along the trains
 
-  let isOnTrain = false; //player not on train yet 
+  let isOnTrain = false; //player not on train yet
 
   for (let trainObject of train) {
     if (isPlayerOnTrain(player, trainObject)) {
@@ -65,8 +165,10 @@ function gameScreen() {
     }
   }
 
-  for (let trackObject of track) {//hämtar alla tracks
-    if ( //position
+  for (let trackObject of track) {
+    //calls all tracks
+    if (
+      //position
       player.y >= trackObject.y + 20 &&
       player.y <= trackObject.y + 80 &&
       player.x >= trackObject.x &&
@@ -76,7 +178,7 @@ function gameScreen() {
         headsUpDisplay.livesLeft--;
         player.x = 300;
         player.y = 995;
-        break; //loop avslutas
+        break; //loop ends
       }
     }
   }
@@ -109,6 +211,11 @@ function isPlayerOnTrain(player, train) {
     player.x >= train.x - 130 &&
     player.x <= train.x + 235
   );
+}
+
+function randomNumber(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+  //written with help from chatGPT: https://chatgpt.com/share/6749e110-4a48-8000-980a-fd4436109bdf
 }
 
 class HeadsUpDisplay {
@@ -370,7 +477,7 @@ class Character {
       if (this.y < border.minY) {
         this.y = border.minY;
       }
-      if (frameCount % 6 === 0) {
+      if (frameCount % this.feetMovementSpeed === 0) {
         this.flipped = !this.flipped;
       }
     }
@@ -381,7 +488,7 @@ class Character {
       if (this.y > border.maxY) {
         this.y = border.maxY;
       }
-      if (frameCount % 6 === 0) {
+      if (frameCount % this.feetMovementSpeed === 0) {
         this.flipped = !this.flipped;
       }
     }
@@ -392,7 +499,7 @@ class Character {
       if (this.x > border.maxX) {
         this.x = border.maxX;
       }
-      if (frameCount % 6 === 0) {
+      if (frameCount % this.feetMovementSpeed === 0) {
         this.flipped = !this.flipped;
       }
     }
@@ -404,7 +511,7 @@ class Character {
         this.x = border.minX;
       }
 
-      if (frameCount % 6 === 0) {
+      if (frameCount % this.feetMovementSpeed === 0) {
         this.flipped = !this.flipped;
       }
     }
@@ -550,33 +657,6 @@ let headsUpDisplay = new HeadsUpDisplay();
 let win = new ScreenText("You got a point!", "Press space to play again");
 let loss = new ScreenText("You lost!", "Press space to try again");
 
-let player = new Character(
-  300,
-  995,
-  "rgb(40, 188, 132)",
-  "rgb(244, 196, 172)",
-  "rgb(4, 148, 172)",
-  false,
-  1,
-  true,
-  0,
-  15
-
-  /*
-    x,
-    y,
-    shirtColor,
-    skinColor,
-    pantsColor,
-    beerCan,
-    direction,
-    flipped,
-    rotation,
-    velocity,
-    feetMovementSpeed
-    */
-);
-
 let track = [
   new Traintracks(0, 210),
   new Traintracks(0, 290),
@@ -588,77 +668,11 @@ let track = [
 ];
 
 let train = [
-  new Train(300, 260, "rgb(40, 188, 132)", 2, 5, -400),
-  new Train(100, 340, "rgb(120, 36, 36)", 2, 5, -400),
-  new Train(600, 510, "rgb(120, 136, 0)", 2, 5, -400),
-  new Train(700, 670, "rgb(40, 188, 132)", 2, 5, -400),
-  new Train(800, 750, "rgb(120, 36, 36)", 2, 5, -400),
-  new Train(200, 910, "rgb(120, 136, 0)", 2, 5, -400),
-  //        x, y, trainColor, carAmount, velocity, resetPos
-];
-
-let hobo = [
-  new Character(
-    0,
-    180,
-    "rgb(120, 36, 36)",
-    "rgb(140, 112, 98)",
-    "rgb(66, 40, 27)",
-    true,
-    -1,
-    false,
-    HALF_PI,
-    6,
-    4
-  ),
-
-  new Character(
-    0,
-    430,
-    "rgb(120, 36, 36)",
-    "rgb(140, 112, 98)",
-    "rgb(66, 40, 27)",
-    true,
-    1,
-    true,
-    HALF_PI,
-    3
-  ),
-  new Character(
-    0,
-    590,
-    "rgb(120, 36, 36)",
-    "rgb(140, 112, 98)",
-    "rgb(66, 40, 27)",
-    true,
-    -1,
-    true,
-    HALF_PI,
-    3
-  ),
-  new Character(
-    0,
-    830,
-    "rgb(120, 36, 36)",
-    "rgb(140, 112, 98)",
-    "rgb(66, 40, 27)",
-    true,
-    1,
-    true,
-    HALF_PI,
-    3
-    /*
-    x,
-    y,
-    shirtColor,
-    skinColor,
-    pantsColor,
-    beerCan,
-    direction,
-    flipped,
-    rotation,
-    velocity,
-    feetMovementSpeed
-    */
-  ),
+  new Train(randomNumber(-500, 700), 260, "rgb(40, 188, 132)", 2, 2.5, -400),
+  new Train(randomNumber(-500, 700), 340, "rgb(120, 36, 36)", 2, 3.5, -400),
+  new Train(randomNumber(-500, 700), 510, "rgb(120, 136, 0)", 2, 2.5, -400),
+  new Train(randomNumber(-500, 700), 670, "rgb(40, 188, 132)", 2, 3.5, -400),
+  new Train(randomNumber(-500, 700), 750, "rgb(120, 36, 36)", 2, 2.5, -400),
+  new Train(randomNumber(-500, 700), 910, "rgb(120, 136, 0)", 2, 3, -400),
+  //                      x,         y,    trainColor, carAmount, velocity, resetPos
 ];
