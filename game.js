@@ -104,10 +104,10 @@ function gameScreen() {
 function isPlayerOnTrain(player, train) {
   //using classes Character and Train
   return (
-    player.y >= train.y - 30 &&
-    player.y <= train.y + 30 &&
-    player.x >= train.x - 70 &&
-    player.x <= train.x + 200
+    player.y >= train.y - 40 &&
+    player.y <= train.y + 40 &&
+    player.x >= train.x - 130 &&
+    player.x <= train.x + 235
   );
 }
 
