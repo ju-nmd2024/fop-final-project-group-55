@@ -50,12 +50,33 @@ function gameScreen() {
   }
 
   // Move player along the trains
+
+  let isOnTrain = false; //player not on train yet 
+
   for (let trainObject of train) {
     if (isPlayerOnTrain(player, trainObject)) {
       player.x += trainObject.velocity;
 
       if (player.x > border.maxX) {
         player.x = border.maxX;
+      }
+
+      isOnTrain = true;
+    }
+  }
+
+  for (let trackObject of track) {//hämtar alla tracks
+    if ( //position
+      player.y >= trackObject.y + 20 &&
+      player.y <= trackObject.y + 80 &&
+      player.x >= trackObject.x &&
+      player.x <= trackObject.x + 600
+    ) {
+      if (!isOnTrain) {
+        headsUpDisplay.livesLeft--;
+        player.x = 300;
+        player.y = 995;
+        break; //loop avslutas
       }
     }
   }
