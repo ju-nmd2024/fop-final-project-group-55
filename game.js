@@ -1,7 +1,5 @@
 let state = "start";
 
-let isOnTrain = false; //player not on train yet
-
 let border = {
   minX: 25,
   maxX: 575,
@@ -143,7 +141,30 @@ function gameScreen() {
 
   for (let trackObject of track) {
     trackObject.draw();
+  }
+  for (let trainObject of train) {
+    trainObject.draw();
+    trainObject.update();
+  }
 
+  // Move player along the trains
+
+  let isOnTrain = false; //player not on train yet
+
+  for (let trainObject of train) {
+    if (isPlayerOnTrain(player, trainObject)) {
+      player.x += trainObject.velocity;
+
+      if (player.x > border.maxX) {
+        player.x = border.maxX;
+      }
+
+      isOnTrain = true;
+    }
+  }
+
+  for (let trackObject of track) {
+    //calls all tracks
     if (
       //position
       player.y >= trackObject.y + 20 &&
@@ -155,23 +176,8 @@ function gameScreen() {
         headsUpDisplay.livesLeft--;
         player.x = 300;
         player.y = 995;
+        break; //loop ends
       }
-    }
-  }
-
-  for (let trainObject of train) {
-    trainObject.draw();
-    trainObject.update();
-
-    // Move player along the trains
-    if (isPlayerOnTrain(player, trainObject)) {
-      player.x += trainObject.velocity;
-
-      if (player.x > border.maxX) {
-        player.x = border.maxX;
-      }
-
-      isOnTrain = true;
     }
   }
 
