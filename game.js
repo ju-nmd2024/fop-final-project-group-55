@@ -1,4 +1,6 @@
-let state = "game";
+let state = "start";
+
+let isOnTrain = false; //player not on train yet
 
 let border = {
   minX: 25,
@@ -6,9 +8,6 @@ let border = {
   minY: 50,
   maxY: 1020,
 };
-
-let player;
-let hobo;
 
 function setup() {
   createCanvas(600, 1100);
@@ -41,6 +40,7 @@ function setup() {
       */
   );
 
+  //hobo array
   hobo = [
     new Character(
       randomNumber(0, 600),
@@ -143,30 +143,7 @@ function gameScreen() {
 
   for (let trackObject of track) {
     trackObject.draw();
-  }
-  for (let trainObject of train) {
-    trainObject.draw();
-    trainObject.update();
-  }
 
-  // Move player along the trains
-
-  let isOnTrain = false; //player not on train yet
-
-  for (let trainObject of train) {
-    if (isPlayerOnTrain(player, trainObject)) {
-      player.x += trainObject.velocity;
-
-      if (player.x > border.maxX) {
-        player.x = border.maxX;
-      }
-
-      isOnTrain = true;
-    }
-  }
-
-  for (let trackObject of track) {
-    //calls all tracks
     if (
       //position
       player.y >= trackObject.y + 20 &&
@@ -178,8 +155,23 @@ function gameScreen() {
         headsUpDisplay.livesLeft--;
         player.x = 300;
         player.y = 995;
-        break; //loop ends
       }
+    }
+  }
+
+  for (let trainObject of train) {
+    trainObject.draw();
+    trainObject.update();
+
+    // Move player along the trains
+    if (isPlayerOnTrain(player, trainObject)) {
+      player.x += trainObject.velocity;
+
+      if (player.x > border.maxX) {
+        player.x = border.maxX;
+      }
+
+      isOnTrain = true;
     }
   }
 
@@ -214,7 +206,7 @@ function isPlayerOnTrain(player, train) {
 }
 
 function randomNumber(min, max) {
-  return Math.floor(Math.random() * (max - min + 1)) + min;
+  return Math.random() * (max - min) + min;
   //written with help from chatGPT: https://chatgpt.com/share/6749e110-4a48-8000-980a-fd4436109bdf
 }
 
