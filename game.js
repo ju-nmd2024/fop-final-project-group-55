@@ -9,7 +9,7 @@ let border = {
 
 function setup() {
   createCanvas(600, 1100);
-  frameRate(90);
+  frameRate(60);
 
   player = new Character(
     300,
@@ -21,7 +21,7 @@ function setup() {
     1,
     true,
     0,
-    3,
+    4.5,
     10
     /*
       x,
@@ -50,7 +50,7 @@ function setup() {
       -1,
       false,
       HALF_PI,
-      3,
+      4.5,
       10
     ),
 
@@ -64,7 +64,7 @@ function setup() {
       1,
       true,
       HALF_PI,
-      1.5,
+      2.25,
       16
     ),
     new Character(
@@ -77,7 +77,7 @@ function setup() {
       -1,
       true,
       HALF_PI,
-      1,
+      1.5,
       20
     ),
     new Character(
@@ -90,7 +90,7 @@ function setup() {
       1,
       true,
       HALF_PI,
-      1.5,
+      2.25,
       16
       /*
       x,
@@ -666,11 +666,11 @@ let track = [
 ];
 
 let train = [
-  new Train(randomNumber(-500, 700), 260, "rgb(40, 188, 132)", 2, 2.5, -400),
-  new Train(randomNumber(-500, 700), 340, "rgb(120, 36, 36)", 2, 3.5, -400),
-  new Train(randomNumber(-500, 700), 510, "rgb(120, 136, 0)", 2, 2.5, -400),
-  new Train(randomNumber(-500, 700), 670, "rgb(40, 188, 132)", 2, 3.5, -400),
-  new Train(randomNumber(-500, 700), 750, "rgb(120, 36, 36)", 2, 2.5, -400),
+  new Train(randomNumber(-500, 700), 260, "rgb(40, 188, 132)", 2, 3.75, -400),
+  new Train(randomNumber(-500, 700), 340, "rgb(120, 36, 36)", 2, 5.25, -400),
+  new Train(randomNumber(-500, 700), 510, "rgb(120, 136, 0)", 2, 3.75, -400),
+  new Train(randomNumber(-500, 700), 670, "rgb(40, 188, 132)", 2, 5.25, -400),
+  new Train(randomNumber(-500, 700), 750, "rgb(120, 36, 36)", 2, 3.75, -400),
   new Train(randomNumber(-500, 700), 910, "rgb(120, 136, 0)", 2, 3, -400),
   //                      x,         y,    trainColor, carAmount, velocity, resetPos
 ];
