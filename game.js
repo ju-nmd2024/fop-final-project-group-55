@@ -209,7 +209,7 @@ function isPlayerOnTrain(player, train) {
     player.y >= train.y - 40 &&
     player.y <= train.y + 40 &&
     player.x >= train.x - 130 &&
-    player.x <= train.x + 235
+    player.x <= train.x + 240
   );
 }
 
